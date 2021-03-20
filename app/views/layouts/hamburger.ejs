@@ -1,0 +1,18 @@
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="<%=constant.SITE_URL %>">Antarctica Global</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="<%=constant.SITE_URL %>">Home</a></li>
+      
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        <% if (typeof loggedin !== 'undefined' && loggedin != false) { %>
+            <li><a href="<%=constant.SITE_URL %>logout"><%=user_session.first_name %> <%=user_session.last_name %> <span class="fa fa-sign-out"></span></a></li>
+        <% } else { %>
+            <li><a href="<%=constant.SITE_URL %>register"><span class="glyphicon glyphicon-log-in"></span> Sign Up/Login</a></li>
+        <% } %>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,108 @@
+<%- include(viewpath+ '/layouts/header'); %>
+</head>
+<body>
+   <div class="container">
+        <%- include(viewpath+ '/layouts/hamburger'); %>
+  
+        
+        <% if (typeof loggedin !== 'undefined' && loggedin != false) { %>
+        <h1>User's List</h1>
+        <div>
+            <div class="col-md-2 col-sm-3 col-xs-6 mb5 pull-left">
+              <div class="form-group">
+                <label for="user_fname">First Name:</label>
+                <input type="text" class="form-control" id="user_fname" name="user_fname">
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-3 col-xs-6 mb5 pull-left">
+              <div class="form-group">
+                <label for="user_lname">Last Name:</label>
+                <input type="text" class="form-control" id="user_lname" name="user_lname">
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-3 col-xs-6 mb5 pull-left">
+              <div class="form-group">
+                <label for="emp_id">Employee ID:</label>
+                <input type="text" class="form-control" id="emp_id" name="emp_id">
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-6 mb5 pull-left">
+              <div class="form-group">
+                <label for="emp_id"></label>
+                <input type="button" class="btn btn-danger" value="Search" onclick="getRecords();">
+                <button type="reset" class="btn btn-default" onclick="$('input').val('');getRecords();">Clear Filters</button>
+              </div>
+            </div>
+        </div>
+       <table class="table" id="userlist">
+        <thead>
+           <tr>
+               <th>Employee ID</th>
+               <th>First Name</th>
+               <th>Last Name</th>
+               <th>Email</th>
+               <th>Password</th>
+               <th>Organization</th>
+           </tr>
+        </thead>
+        <tbody>
+        </tbody>
+       </table>
+       <% } else { %>
+        <h1>Welcome to Antarctica Global</h1>
+        <img src="http://antarcticaglobal.com/images/arctic.jpeg">
+       <% } %>
+   </div>
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.js"></script>
+
+<% if (typeof loggedin !== 'undefined' && loggedin != false) { %>
+   <script type="text/javascript">
+    jQuery(document).ready(function(){
+        getRecords();
+        $('#user_fname,#user_lname,#emp_id').keypress(function(e) {
+            if(e.which == 13) {
+                getRecords();
+            }
+        });
+        });
+       function getRecords() {
+          $('#userlist').DataTable().destroy();
+          user_fname = $('#user_fname').val();
+          user_lname = $('#user_lname').val();
+          emp_id = $('#emp_id').val();
+          $('#userlist').DataTable({
+            "bDestroy": true,
+            "bServerSide" : true,
+            "paging": true,
+            "bLengthChange": false,
+            "bFilter": false, //hide Search bar
+            "autoWidth": false,
+            "sAjaxSource": "<%=constant.SITE_URL%>getUserRecords",
+            "order": [[0, "desc"]],
+            "sServerMethod": "POST",
+            "fnServerParams": function ( aoData ) {
+                aoData.push({ "name": "user_fname", "value": user_fname});
+                aoData.push( { "name": "user_lname", "value": user_lname});
+                aoData.push( { "name": "emp_id", "value": emp_id});
+            },
+            "columns":  [
+                          
+                          {"data": "emp_id"},
+                          { 
+                            "data": "user_fname", 
+                          },
+                          {"data": "user_lname"},
+                          { 
+                            "data": "user_email"},
+                          
+                          {"data": "user_password"},
+                          {"data": "organization"}
+                    ],
+                    // columnDefs: [ { orderable: false, targets: [2,3,4] },{ visible: false, targets: [4] },{className: "pos-rel", "targets": [  ]}]
+                  });
+        }
+   </script>
+<% } %>
+<%- include(viewpath+ '/layouts/footer'); %>

@@ -1,0 +1,129 @@
+<%- include(viewpath+ '/layouts/header'); %>
+</head>
+<body>
+  <div class="container">
+    <%- include(viewpath+ '/layouts/hamburger'); %>
+  <div class="col-md-6">
+    <h1>Register User</h1>
+    <% if (typeof sucMsg !== 'undefined') { %>
+    <div class="alert alert-success">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Success!</strong> <%=sucMsg %>
+    </div>
+    <% } %>
+    <form action="" method="post" id="frmregister">
+      <div class="form-group">
+        <label for="user_fname">First Name:</label>
+        <input type="text" class="form-control" id="user_fname" name="user_fname">
+      </div>
+      <div class="form-group">
+        <label for="user_lname">Last Name:</label>
+        <input type="text" class="form-control" id="user_lname" name="user_lname">
+      </div>
+      <div class="form-group">
+        <label for="email">Email address:</label>
+        <input type="email" class="form-control" id="user_email" name="user_email">
+      </div>
+      <div class="form-group">
+        <label for="pwd">Password:</label>
+        <input type="password" class="form-control" id="user_password" name="user_password">
+      </div>
+      <div class="form-group">
+        <label for="organization">Organization:</label>
+        <input type="text" class="form-control" id="organization" name="organization">
+      </div>
+      <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+  </div>
+  <div class="col-md-6">
+    <% if (typeof errMsg !== 'undefined') { %>
+    <div class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Error!</strong> <%=errMsg %>
+    </div>
+    <% } %>
+    <h1>Login</h1>
+    <form action="/login" method="post" id="frmlogin">
+      <div class="form-group">
+        <label for="email">Email address:</label>
+        <input type="email" class="form-control" id="user_email" name="user_email">
+      </div>
+      <div class="form-group">
+        <label for="pwd">Password:</label>
+        <input type="password" class="form-control" id="user_password" name="user_password">
+      </div>
+      <button type="submit" class="btn btn-success">Login</button>
+    </form>
+  </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js" type="text/javascript"></script>
+  <script type="text/javascript">  
+    $(document).ready(function() {
+        $("#frmregister").validate({
+
+            rules: {
+                user_fname: {
+                    required: true,
+                    maxlength: 50
+                },
+                user_lname:{
+                    required: true,
+                    maxlength: 50
+                },
+                user_email: {
+                    required: true,
+                    maxlength: 100
+                },
+                user_password: {
+                    required: true,
+                    maxlength: 30
+                },
+                organization: {
+                    required: true,
+                    maxlength: 100
+                },
+                
+            },
+            messages: {
+                user_fname: {
+                    required: "Please enter First Name.",
+                },
+                user_lname: {
+                    required: "Please select Last Name."
+                },
+                user_email: {
+                    required: "Please enter Email Address.",
+                },
+                user_password: {
+                    required: "Please enter Password.",
+                },
+                organization: {
+                    required: "Please enter Organization Name.",
+                },
+            }
+        });
+
+        $("#frmlogin").validate({
+
+            rules: {
+                user_email: {
+                    required: true,
+                    maxlength: 100
+                },
+                user_password: {
+                    required: true,
+                    maxlength: 30
+                },
+            },
+            messages: {
+                user_email: {
+                    required: "Please enter Email Address.",
+                },
+                user_password: {
+                    required: "Please enter Password.",
+                },
+            }
+        });
+      });
+  </script>
+<%- include(viewpath+ '/layouts/footer'); %>
